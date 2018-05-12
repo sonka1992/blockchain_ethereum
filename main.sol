@@ -23,8 +23,8 @@ contract ReserveVS {
     }
 
     function reserve(uint24 slotId) public payable {
-        require(reservation[slotId] == 0);
-        require(balanceOf[msg.sender] >= price);
+	require(reservation[slotId] == 0);
+        require(msg.value >= price);
 
         balanceOf[msg.sender] -= price;
         balanceToBeWithDrawn += price;
