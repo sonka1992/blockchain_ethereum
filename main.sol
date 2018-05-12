@@ -43,6 +43,7 @@ contract ReserveVS {
     }
 
     function withdraw() public {
+        require(msg.sender == owner);
         balanceOf[owner] += balanceToBeWithDrawn;
         balanceToBeWithDrawn = 0;
     }
