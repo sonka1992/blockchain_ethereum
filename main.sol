@@ -23,6 +23,7 @@ contract ReserveVS {
     }
 
     function reserve(uint24 slotId) public payable {
+        require(slotId > 0);
 	require(reservation[slotId] == 0);
         require(msg.value >= price);
 
