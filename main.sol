@@ -5,21 +5,17 @@ contract ReserveVS {
     //<contract_variables>
     uint256 price;
     address public owner;
-    bool isCreated = false;
 
-    mapping (address => uint) private balanceOf;
     mapping (uint => address) private reservation;
     uint private balanceToBeWithDrawn = 0;
     uint public VSCreationDate;
     //</contract_variables>
 
     function ReserveVS(uint256 pricePerSlot) public {
-        if(!isCreated) {
-            price = pricePerSlot;
-            owner = msg.sender;
-            VSCreationDate = block.timestamp;
-            isCreated = true;
-        }
+        price = pricePerSlot;
+        owner = msg.sender;
+        VSCreationDate = block.timestamp;
+        isCreated = true;
     }
 
     function reserve(uint24 slotId) public payable {
@@ -27,8 +23,7 @@ contract ReserveVS {
 	    require(reservation[slotId] == 0);
         require(msg.value >= price);
 
-        balanceOf[msg.sender] -= price;
-        balanceToBeWithDrawn += price;
+        balanceToBeWithDrawn += msg.value;
         reservation[slotId] = msg.sender;
     }
 
@@ -39,13 +34,13 @@ contract ReserveVS {
     }
 
     function validate(address client) public view returns (bool) {
-        uint diff = (block.timestamp - VSCreationDate) / 60 / 30;
+        uint diff = 1 + (block.timestamp - VSCreationDate) / 60 / 30;
         return reservation[diff] == client;
     }
 
     function withdraw() public {
         require(msg.sender == owner);
-        balanceOf[owner] += balanceToBeWithDrawn;
+        owner.transfer(balanceToBeWithDrawn);
         balanceToBeWithDrawn = 0;
     }
 
