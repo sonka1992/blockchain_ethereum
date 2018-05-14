@@ -15,7 +15,6 @@ contract ReserveVS {
         price = pricePerSlot;
         owner = msg.sender;
         VSCreationDate = block.timestamp;
-        isCreated = true;
     }
 
     function reserve(uint24 slotId) public payable {
