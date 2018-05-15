@@ -12,7 +12,7 @@ contract ReserveVS {
     //</contract_variables>
 
     function ReserveVS(uint256 pricePerSlot) public {
-        price = pricePerSlot;
+        price = pricePerSlot * (10 ** 18);
         owner = msg.sender;
         VSCreationDate = block.timestamp;
     }
